@@ -1,8 +1,6 @@
-import Review from "../models/review";
-import Product from "../models/product";
-import ProductNames from "../models/productNames";
-import { createError } from "../utils/createError"
-import ProductNames from "../models/productNames";
+import Product from "../models/product.js";
+import { createError } from "../utils/createError.js"
+import ProductNames from "../models/productNames.js";
 
 export const getProduct = async (req, res, next) => {
     try {
@@ -42,27 +40,42 @@ export const searchProducts = async (req, res, next) => {
         next(createError(404, "Not Found"));
     }
 }
-
+export const createProduct = async (req, res, next) => {
+    try {
+        const product = new Product(req.body);
+        product.save();
+        return res.status(201).json({ success: true, product: product });
+    } catch (error) {
+        next(createError(400, "Failed to save in DB"));
+    }
+}
 export const addProductsToDB = async (req, res, next) => {
     try {
         const products = req.body.products;
-        if (!products || products.length === 0) next(createError(403, "No product to add in DB"));
-        let count = 0;
-        products.forEach(async (product) => {
+
+        if (!products || products.length === 0) {
+            return next(createError(403, "No product to add in DB"));
+        }
+
+        for (const product of products) {
             try {
                 const newProduct = new Product(product);
                 await newProduct.save();
-                const isExistingName = ProductNames.find(product.name);
+
+                const isExistingName = await ProductNames.findOne({ name: newProduct.name });
+
                 if (!isExistingName) {
-                    const name = new ProductNames(product.name);
+                    const name = new ProductNames({ name: newProduct.name });
                     await name.save();
+                    console.log(name);
                 }
             } catch (error) {
-                next(createError(400, `Added ${count} products, Failed for ${product.name}`));
+                return next(createError(400, `Failed to add product ${product.name}`));
             }
-        });
+        }
+
         res.status(201).json({ success: true, message: "Added all to DB" });
     } catch (error) {
         next(createError(400, "Failed To Process"));
     }
-}
+};

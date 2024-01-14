@@ -18,11 +18,19 @@ const ProductSchema = new mongoose.Schema({
         required: true,
     },
     ratings: {
-        type: Number,
-        default: 0,
+        type: String,
+        default:"No rating available",
     },
     reviews: [{
         type: String,
+    }],
+    product_specifications: [{
+        key: {
+            type: String,
+        },
+        value: {
+            type: String,
+        },
     }],
 }, { timestamps: true });
 

@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.js";
+import productRoutes from "./routes/product.js";
 
 
 import { ConnectDB } from "./utils/mongoDB.js";
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(Express.json());
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/product', productRoutes);
 
 app.use(errorHandler);
 
