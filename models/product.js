@@ -24,14 +24,7 @@ const ProductSchema = new mongoose.Schema({
     reviews: [{
         type: String,
     }],
-    product_specifications: [{
-        key: {
-            type: String,
-        },
-        value: {
-            type: String,
-        },
-    }],
+    product_specifications: [],
 }, { timestamps: true });
 
 export default mongoose.model('Product', ProductSchema, 'ProductCollection');

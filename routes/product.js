@@ -5,8 +5,8 @@ import { addProductsToDB, createProduct, getProduct, searchProducts, searchSugge
 const router = Express.Router();
 
 
-router.get('/getProduct/:productID', getProduct);
-router.get('/searchProducts/:searchString', searchProducts);
+router.get('/getProduct', getProduct);
+router.get('/searchProducts', searchProducts);
 router.get('/searchSuggestions/:searchString', searchSuggestions);
 // router.patch('/addProductReview/:productID', verifyUser, addProductReview);
 
