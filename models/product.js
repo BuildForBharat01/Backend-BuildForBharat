@@ -17,9 +17,12 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    category_tree: {
+        type: String,
+    },
     ratings: {
         type: String,
-        default:"No rating available",
+        default: "No rating available",
     },
     reviews: [{
         type: String,

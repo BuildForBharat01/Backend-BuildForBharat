@@ -25,5 +25,5 @@ app.use('/api/v1/product', productRoutes);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-    console.log('Connected to Backend')
+    console.log('Connected to Backend @PORT', process.env.PORT)
 })

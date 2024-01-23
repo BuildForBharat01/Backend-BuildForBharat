@@ -1,6 +1,5 @@
 import Product from "../models/product.js";
 import { createError } from "../utils/createError.js"
-import ProductNames from "../models/productNames.js";
 
 export const getProduct = async (req, res, next) => {
     try {
@@ -17,18 +16,16 @@ export const searchSuggestions = async (req, res, next) => {
         if (!searchString || searchString.trim() === "") {
             return next(createError(400, "Search string is required"));
         }
-        const productNames = await ProductNames.find({
-            name: { $regex: new RegExp(`\\b${searchString}`, "i") }
+        const products = await Product.find({
+            name: { $regex: new RegExp(`^${searchString}`, "i") }
         }).limit(10);
+
+        const productNames = products.map((product) => product.name)
 
         if (!productNames || productNames.length === 0) {
             return next(createError(404, "Products Not Found"));
         }
-
-        // Extract only the names from the productNames array
-        const namesArray = productNames.map(product => product.name.slice(0,100));
-
-        return res.status(200).json(namesArray);
+        return res.status(200).json(productNames);
     } catch (error) {
         return next(createError(500, "Internal Server Error"));
     }
@@ -44,9 +41,8 @@ export const searchProducts = async (req, res, next) => {
         const skip = (page - 1) * pageSize;
         const limit = pageSize;
         const products = await Product.find({
-            name: { $regex: new RegExp(searchString, "i") }
+            name: { $regex: new RegExp(`^${searchString}`, "i") }
         }).skip(skip).limit(limit);
-        if (!products || products.length === 0) next(createError(404, "Not Found"));
         return res.status(200).json({ products });
     } catch (error) {
         next(createError(404, "Not Found"));
