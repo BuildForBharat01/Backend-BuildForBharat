@@ -18,3 +18,5 @@
 # Ignore editor files
 .vscode/
 .idea/
+
+.env
