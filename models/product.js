@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
+    send_to_client: {
+        type: Boolean,
+        default: false,
+    },
     images: [{
         type: String,
         required: true,
