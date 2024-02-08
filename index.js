@@ -22,6 +22,10 @@ app.use(Express.json());
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/product', productRoutes);
 
+app.get("/",(req,res)=>{
+    res.send("Welcome to E-Commerce Backend");
+})
+
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
